@@ -88,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset('assets/quickmeet.png'),
             ElevatedButton(
               onPressed: () {
                 signIn();

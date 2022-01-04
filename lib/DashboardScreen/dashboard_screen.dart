@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:duration_picker_dialog_box/duration_picker_dialog_box.dart';
+import 'package:enough_icalendar/enough_icalendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis/calendar/v3.dart' as cal;
+import 'package:path_provider/path_provider.dart';
 import 'package:quickmeet/DashboardScreen/custom_button.dart';
 import 'package:quickmeet/clients/calendar_client.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 enum WhenOptions { Today, Tomorrow, Custom }
 
@@ -41,7 +46,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Duration duration = Duration(minutes: 25); // in minutes
   bool isCustom = false;
   DateTime date = DateTime.now().add(Duration(days: 1));
-  TimeOfDay time = TimeOfDay.now().replacing(hour: TimeOfDay.now().hour + 1);
+  TimeOfDay time = TimeOfDay.now().replacing(
+      hour: (TimeOfDay.now().hour + 1) < TimeOfDay.hoursPerDay
+          ? TimeOfDay.now().hour + 1
+          : TimeOfDay.now().hour);
 
   Future<Map<String, String>> insert({
     required String title,
@@ -91,20 +99,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
               conferenceDataVersion: hasConferenceSupport ? 1 : 0,
               sendUpdates: shouldNotifyAttendees ? "all" : "none")
           .then((value) {
-        print("Event Status: ${value.status}");
         if (value.status == "confirmed") {
           String joiningLink = '';
           String eventId = '';
 
-          eventId = value.id;
+          eventId = value.id!;
 
           if (hasConferenceSupport) {
             joiningLink =
-                "https://meet.google.com/${value.conferenceData.conferenceId}";
+                "https://meet.google.com/${value.conferenceData!.conferenceId}";
 
             setState(() {
               meetingLink = joiningLink;
-              eventID = value.id;
+              eventID = value.id!;
             });
           }
 
@@ -388,14 +395,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       startTime: startTime,
                       endTime: startTime.add(duration),
                     );
-                    setState(() {
-                      loading = false;
-                    });
                     if (eventDetails.isNotEmpty) {
                       Fluttertoast.showToast(msg: 'Event added successfully!');
-                      Share.shareFiles([
-                        'https://www.google.com/calendar/ical/$eventID/public/basic.ics'
-                      ]);
+
+                      await CalendarClient.calendar.events
+                          .get('primary', eventDetails['id']!)
+                          .then((value) async {
+                        if (value.status == "confirmed") {
+                          final invite = VCalendar.createEvent(
+                            rsvp: false,
+                            organizer: OrganizerProperty.create(
+                                email: value.organizer!.email!),
+                            organizerEmail: value.organizer!.email!,
+                            start: value.start!.dateTime!,
+                            end: value.end!.dateTime!,
+                            summary: title,
+                            description: value.description!,
+                            url: Uri.parse(value.hangoutLink!),
+                            method: Method.add,
+                            productId: 'quickmeet',
+                          );
+
+                          final directory =
+                              (await getApplicationDocumentsDirectory()).path;
+                          var file = File('$directory/$title.ics');
+                          if (!file.existsSync()) {
+                            await file.create();
+                          }
+                          file.writeAsStringSync(invite.toString());
+
+                          await Share.shareFiles([file.path],
+                              mimeTypes: ['text/calendar'],
+                              subject: title,
+                              text:
+                                  'Checkout the attached ics file and please join the meeting on time. \n\nCreated using Quick Meet App.');
+
+                          setState(() {
+                            loading = false;
+                          });
+                        }
+                      });
                     } else {
                       Fluttertoast.showToast(
                           msg: 'Sorry, unable to setup meeting!');
