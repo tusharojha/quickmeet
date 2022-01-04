@@ -396,6 +396,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Share.shareFiles([
                         'https://www.google.com/calendar/ical/$eventID/public/basic.ics'
                       ]);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: 'Sorry, unable to setup meeting!');
                     }
                   },
                 ),
