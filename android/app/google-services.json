@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "819058821560",
+    "project_id": "quickmeet-app",
+    "storage_bucket": "quickmeet-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819058821560:android:397b441261e5a7b006a74d",
+        "android_client_info": {
+          "package_name": "com.tusharojha.quickmeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819058821560-0e9ikpvqdakh5209qj7voh0vpa3939cc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH30VlE2mTv4byMcwhiKW394feF0FD3WU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819058821560-0e9ikpvqdakh5209qj7voh0vpa3939cc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "819058821560-474q53gt7k2u75gtlehqner4bq1p714n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tusharojha.quickmeet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

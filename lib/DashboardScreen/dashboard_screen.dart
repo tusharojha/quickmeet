@@ -4,6 +4,7 @@ import 'package:duration_picker_dialog_box/duration_picker_dialog_box.dart';
 import 'package:enough_icalendar/enough_icalendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:googleapis/calendar/v3.dart' as cal;
 import 'package:path_provider/path_provider.dart';
 import 'package:quickmeet/DashboardScreen/custom_button.dart';
@@ -11,6 +12,7 @@ import 'package:quickmeet/clients/calendar_client.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 enum WhenOptions { Today, Tomorrow, Custom }
 
@@ -39,6 +41,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   TextEditingController _controller = TextEditingController();
   WhenOptions when = WhenOptions.Tomorrow;
+  var _storage = FlutterSecureStorage();
 
   bool loading = false;
   String eventID = '';
@@ -139,12 +142,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.info),
-          onPressed: () {},
+          onPressed: () async {
+            await _storage.write(key: 'accessToken', value: null);
+            await _storage.write(key: 'type', value: null);
+            await _storage.write(key: 'expiry', value: null);
+
+            await _storage.write(key: 'refreshToken', value: null);
+            Navigator.pushReplacementNamed(context, '/splash');
+          },
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.calendar_today_rounded),
-            onPressed: () {},
+            onPressed: () async {
+              if (await canLaunch('https://calendar.google.com')) {
+                launch('https://calendar.google.com');
+              }
+            },
           ),
         ],
       ),

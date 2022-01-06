@@ -83,12 +83,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome to QuickMeet'),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset('assets/quickmeet.png'),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 signIn();
