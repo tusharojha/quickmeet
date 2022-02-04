@@ -1,16 +1,25 @@
-# quickmeet
+# Quickmeet
 
-A new Flutter project.
+A Flutter App to create and schedule meetings instantly.
 
-## Getting Started
+## Aim
 
-This project is a starting point for a Flutter application.
+This project is aimed to allow people create meetings instantly from a simple interface and invite others by sharing ics file over social platforms.
 
-A few resources to get you started if this is your first Flutter project:
+## Working
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+User is expected to get authenticated using Google and permit the app to access their calendar. 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+After this one time process, users can quickly create & schedule a meeting using the app. 
+
+Once the meeting is scheduled it will be added to the creator's calendar and opens a share menu to invite other people using ics file.
+
+## Technologies
+
+This project is built using Flutter and uses Google's oauth packages + Firebase to authenticate user. 
+
+For interacting with calendar, the project uses Google Calendar APIs v3 using the **googleapis_auth** dart package.
+
+## Contributing 
+
+The project is complete but there's always a scope of improvement. So, as of It would be great if you can contribute on the UI/UX part but would love to hear your ideas in the discussion.
