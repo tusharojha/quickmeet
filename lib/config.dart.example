@@ -1,7 +1,0 @@
-import 'dart:io' show Platform;
-
-class Config {
-  static const ANDROID_CLIENT_ID = "<enter your Android client secret>";
-  static const IOS_CLIENT_ID = "<enter your iOS client secret>";
-  static String getId() => Platform.isAndroid ? Config.ANDROID_CLIENT_ID : Config.IOS_CLIENT_ID;
-}
