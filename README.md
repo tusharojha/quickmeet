@@ -1,6 +1,6 @@
 # Quickmeet
 
-A Flutter App to create and schedule meetings instantly.
+A Flutter App to create and schedule meetings in seconds.
 
 ## Aim
 
