@@ -20,6 +20,6 @@ This project is built using Flutter and uses Google's oauth packages + Firebase 
 
 For interacting with calendar, the project uses Google Calendar APIs v3 using the **googleapis_auth** dart package.
 
-## Contributing 
+## Open to Contributions 
 
 The project is complete but there's always a scope of improvement. So, as of It would be great if you can contribute on the UI/UX part but would love to hear your ideas in the discussion.
